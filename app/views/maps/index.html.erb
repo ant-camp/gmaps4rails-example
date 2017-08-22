@@ -5,6 +5,22 @@
 <!-- gmaps4rails script-->
 <script>
 
+  window.resizeComponents = function(){
+    var resizeVar = {height: $(window).height() - $('.navbar-wrapper').height()  + 'px'};
+    $('#scrollable').css(resizeVar);
+    $('#map').css(resizeVar);
+  }
+
+  window.bindLiToMarker = function($li, marker){
+    $li.on('mouseover', function(){
+      handler.getMap().setZoom(14);
+      marker.setMap(handler.getMap());
+      marker.panTo();
+      google.maps.event.trigger(marker.getServiceObject(), 'click');
+    })
+  };
+
+
 
   $(function(){
     resizeComponents();
