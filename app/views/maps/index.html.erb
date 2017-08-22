@@ -1,0 +1,30 @@
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+
+<!-- gmaps4rails script-->
+<script>
+
+
+  $(function(){
+    resizeComponents();
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+
+      var json_array = <%=raw @hash.to_json%>
+
+      var markers = handler.addMarkers(json_array);
+
+     _.each(json_array, function(json, index){
+        json.marker = markers[index];
+      });
+
+      handler.bounds.extendWith(markers);
+      handler.fitMapToBounds();
+
+      window.markers = markers;
+    });
+   })
+
+  $(window).on('resize', resizeComponents);
+</script>
