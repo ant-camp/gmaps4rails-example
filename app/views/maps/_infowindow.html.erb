@@ -1,0 +1,22 @@
+<div class="auto">
+  <div class="media-infowindow">
+    <a class="pull-left">
+    </a>
+    <div class="pull-right">
+      <ul>
+        <li>
+          <b> Year:</b> <%= "#{object.year}" %>
+        </li>
+        <li>
+          <b>Make:</b> <%="#{object.make.name if object.make.name.present?}" %>
+        </li>
+        <li>
+          <b>Model:</b> <%="#{object.model.name if object.model.name.present?}" %>
+        </li>
+        <li>
+          <b>Submodel:</b> <%= "#{object.submodel}" %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
