@@ -1,8 +1,27 @@
 class MapsController < ApplicationController
   def index
 
+      search_params = {}
+      #pagination
+      search_params[:page] = params[:page]
+      search_params[:per] = params[:per]
 
-      @search = Vehicle.custom_search(search_params)
+      #geocode params
+      search_params[:location] = (params[:latitude] && params[:longitude]) if params[:latitude] && params[:longitude] unless search_params[:location].nil?
+      search_params[:radius] = params[:radius] || 10
+
+
+    #Geocoding search
+      #if search_value.present?
+        #geo = Geocoder.coordinates(params[:search])
+         geo = Geocoder.coordinates('orlando')
+      #  if !geo.nil?
+        search_params[:coordinates] = {lat: geo.first,lon: geo.last, radius: params[:radius]}
+          # search_params[:coordinates] = {lat: geo.first,lon: geo.last, radius: 10}
+      #  end
+
+
+      @search = Car.custom_search(search_params)
 
     @automobiles = @search.results
     @hash = Gmaps4rails.build_markers(@automobiles) do |auto, marker|
@@ -17,9 +36,8 @@ class MapsController < ApplicationController
       #marker images
       #assets/images/map_marker
       #submodel of vehicle models represent the image
-      if auto.submodel.present?
-        marker.picture({ "url" => ("/assets/map_marker/#{auto.model.submodel}.png"), "height" => 40, "width" => 40 })
-      end
+      marker.picture({ "url" => ("/assets/map_marker/#{auto.submodel}.png"), "height" => 40, "width" => 40 })
+
     end
 
     #unobtrusive JS
