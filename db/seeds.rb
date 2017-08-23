@@ -1,7 +1,20 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+json = JSON.parse(File.read(File.expand_path("../../db/seeds/automobile.json", __FILE__)))
+automobiles = json["automobiles"]
+
+automobiles.each do |auto|
+
+car = Car.new
+  car.submodel = auto["submodel"]
+  car.year = auto["year"]
+
+ make = CarMake.new
+  make.name = auto["make"]
+  make.save
+
+ model = CarModel.new
+  model.name = auto["model"]
+  model.save
+
+  car.save!
+
+end
